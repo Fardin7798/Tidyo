@@ -6,6 +6,6 @@ void main() {
   testWidgets('Tidyo smoke test', (WidgetTester tester) async {
     await setupServiceLocator();
     await tester.pumpWidget(const TidyoApp());
-    expect(find.text('Hi, Fardin'), findsOneWidget);
+    expect(find.text('Hi, User'), findsOneWidget);
   });
 }

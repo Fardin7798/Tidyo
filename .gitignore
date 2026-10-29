@@ -46,3 +46,12 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Security, Local Config & Keystores
+**/android/local.properties
+**/android/key.properties
+**/*.keystore
+**/*.jks
+.env*
+google-services.json
+GoogleService-Info.plist

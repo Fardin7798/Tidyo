@@ -31,7 +31,7 @@ class DashboardScreen extends StatelessWidget {
 
     return Canvas360(
       children: [
-        tx(24, 82, 'Hi, Fardin', 26, w: FontWeight.w800),
+        tx(24, 82, 'Hi, User', 26, w: FontWeight.w800),
         tx(24, 106, 'Phone health: Good', 14, c: Tk.deep),
         ring(180, 250, 92, pct),
         tx(180, 238, '$usedGb GB', 34, w: FontWeight.w800, a: TextAlign.center),
