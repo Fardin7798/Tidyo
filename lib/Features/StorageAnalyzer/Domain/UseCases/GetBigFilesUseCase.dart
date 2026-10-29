@@ -1,26 +1,20 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:tidyo/Core/Error/Failures.dart';
 import 'package:tidyo/Core/Result/Result.dart';
 import 'package:tidyo/Core/UseCase/BaseUseCase.dart';
-import 'package:tidyo/Core/Services/JunkScannerService.dart';
+import 'package:tidyo/Features/StorageAnalyzer/Domain/Entities/BigFileEntity.dart';
+import 'package:tidyo/Features/StorageAnalyzer/Domain/Repositories/IStorageAnalyzerRepository.dart';
 
 class GetBigFilesParams {
   final int minBytes;
   const GetBigFilesParams({this.minBytes = 50 * 1024 * 1024});
 }
 
-class GetBigFilesUseCase implements BaseUseCase<List<BigFileModel>, GetBigFilesParams> {
-  final JunkScannerService scannerService;
+class GetBigFilesUseCase implements BaseUseCase<List<BigFileEntity>, GetBigFilesParams> {
+  final IStorageAnalyzerRepository repository;
 
-  GetBigFilesUseCase(this.scannerService);
+  GetBigFilesUseCase(this.repository);
 
   @override
-  Future<Result<List<BigFileModel>>> call(GetBigFilesParams params) async {
-    try {
-      final files = await scannerService.findBigFiles(minBytes: params.minBytes);
-      return Right(files);
-    } catch (e) {
-      return Left(StorageFailure(e.toString()));
-    }
+  Future<Result<List<BigFileEntity>>> call(GetBigFilesParams params) {
+    return repository.getBigFiles(minBytes: params.minBytes);
   }
 }

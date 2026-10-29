@@ -18,3 +18,6 @@ class ScanFailure extends Failure {
 class DeleteFailure extends Failure {
   const DeleteFailure(super.message);
 }
+class PlatformFailure extends Failure {
+  const PlatformFailure(super.message);
+}

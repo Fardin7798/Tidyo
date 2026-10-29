@@ -4,7 +4,7 @@ import 'package:tidyo/Core/Widgets/Canvas360Widget.dart';
 import 'package:tidyo/Core/Widgets/SvgIconWidget.dart';
 import 'package:tidyo/Core/Widgets/BottomPillNavWidget.dart';
 import 'package:tidyo/Core/Models/StorageInfoModel.dart';
-import 'package:tidyo/Core/Services/JunkScannerService.dart';
+import 'package:tidyo/Features/StorageAnalyzer/Domain/Entities/BigFileEntity.dart';
 import 'package:tidyo/Config/Injection/InjectionContainer.dart';
 import 'package:tidyo/Features/StorageAnalyzer/Domain/UseCases/GetBigFilesUseCase.dart';
 
@@ -25,7 +25,7 @@ class AnalyzerScreen extends StatefulWidget {
 class _AnalyzerScreenState extends State<AnalyzerScreen> {
   int chip = 1;
   final _getBigFilesUseCase = sl<GetBigFilesUseCase>();
-  List<BigFileModel> _bigFiles = [];
+  List<BigFileEntity> _bigFiles = [];
   bool _isLoading = true;
 
   static const _thresholds = [
@@ -43,7 +43,7 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
   Future<void> _loadFiles() async {
     setState(() => _isLoading = true);
     final result = await _getBigFilesUseCase(GetBigFilesParams(minBytes: _thresholds[chip]));
-    final files = result.fold((l) => <BigFileModel>[], (r) => r);
+    final files = result.fold((l) => <BigFileEntity>[], (r) => r);
     if (mounted) {
       setState(() {
         _bigFiles = files;
