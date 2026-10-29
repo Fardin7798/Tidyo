@@ -3,6 +3,10 @@ import '../../../../Core/Theme/AppTokens.dart';
 import '../../../../Core/Widgets/Canvas360Widget.dart';
 import '../../../../Core/Widgets/BottomPillNavWidget.dart';
 import '../../../../Core/Models/StorageInfoModel.dart';
+import '../../../AppCache/Presentation/Screens/AppCacheScreen.dart';
+import '../../../ResidualFiles/Presentation/Screens/ResidualFilesScreen.dart';
+import '../../../LogsTemp/Presentation/Screens/LogsTempScreen.dart';
+import '../../../StorageAnalyzer/Presentation/Screens/AnalyzerScreen.dart';
 
 class DashboardScreen extends StatelessWidget {
   final StorageInfoModel storageInfo;
@@ -39,7 +43,17 @@ class DashboardScreen extends StatelessWidget {
         tx(212, 282, 'Free', 9, c: Tk.ink2, a: TextAlign.center),
         tx(212, 295, '$freeGb GB', 10, w: FontWeight.w700, c: Tk.ink2, a: TextAlign.center),
         pillBtn(90, 388, 180, 52, 'Scan Junk', icon: 'spark', onTap: onScanPressed),
-        ...catGrid(460, categorySizes),
+        ...catGrid(460, categorySizes, onTap: (i) {
+            final screens = [
+              const AppCacheScreen(),
+              const ResidualFilesScreen(),
+              const LogsTempScreen(),
+              AnalyzerScreen(storageInfo: storageInfo, onNavTap: onNavTap),
+            ];
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => screens[i]),
+            );
+          }),
         tx(24, 642, 'Real device storage · $freeGb GB free', 13, c: Tk.faint),
         Positioned(
           left: 16,

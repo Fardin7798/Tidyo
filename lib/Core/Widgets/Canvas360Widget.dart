@@ -357,11 +357,12 @@ const cats = [
   ('Large & Dupes', Tk.gDupe, 'dupe'),
 ];
 
-List<Widget> catGrid(double y, List<String> vals, {List<bool?>? done}) => [
+List<Widget> catGrid(double y, List<String> vals, {List<bool?>? done, void Function(int)? onTap}) => [
       for (var i = 0; i < 4; i++) ...() {
         final x = 16.0 + (i % 2) * 168, yy = y + (i ~/ 2) * 82;
         return [
           card(x, yy, 160, 72, r: 22),
+          Positioned(left: x, top: yy, width: 160, height: 72, child: GestureDetector(behavior: HitTestBehavior.opaque, onTap: () => onTap?.call(i))),
           gIcon(x + 32, yy + 36, cats[i].$2, cats[i].$3),
           tx(x + 60, yy + 30, cats[i].$1, 12, c: Tk.ink2),
           tx(x + 60, yy + 52, vals[i], 17, w: FontWeight.w800),
@@ -381,3 +382,147 @@ List<Widget> catGrid(double y, List<String> vals, {List<bool?>? done}) => [
         ];
       }(),
     ];
+
+// ───────────── v4 shared bits ─────────────
+List<Widget> detailHeader(BuildContext c, String title) => [
+  Positioned(
+    left: 14,
+    top: 40,
+    width: 40,
+    height: 40,
+    child: GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => Navigator.of(c).maybePop(),
+      child: const Center(
+        child: SvgIcon('back', size: 22, color: Tk.ink, stroke: 2.2),
+      ),
+    ),
+  ),
+  tx(180, 70, title, 18, w: FontWeight.w700, a: TextAlign.center),
+];
+
+class MiniRing extends CustomPainter {
+  final double f;
+  MiniRing(this.f);
+  @override
+  void paint(Canvas c, Size s) {
+    final r = Rect.fromCircle(center: s.center(Offset.zero), radius: 26);
+    c.drawCircle(
+      r.center,
+      26,
+      Paint()
+        ..color = Tk.line
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 9,
+    );
+    c.drawArc(
+      r,
+      -math.pi / 2,
+      2 * math.pi * f,
+      false,
+      Paint()
+        ..shader = Tk.primary.createShader(r)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 9
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  @override
+  bool shouldRepaint(MiniRing o) => o.f != f;
+}
+
+List<Widget> summaryCard(String label, String value, double frac) => [
+  card(16, 92, 328, 84, r: 26),
+  tx(36, 126, label, 13, c: Tk.ink2),
+  tx(36, 160, value, 30, w: FontWeight.w800),
+  at(300, 134, 70, CustomPaint(painter: MiniRing(frac))),
+];
+
+Widget checkBox(double cx, double cy, bool on, VoidCallback onTap) =>
+    Positioned(
+      left: cx - 14,
+      top: cy - 14,
+      width: 28,
+      height: 28,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Center(
+          child: Container(
+            width: on ? 18 : 16,
+            height: on ? 18 : 16,
+            decoration: BoxDecoration(
+              color: on ? Tk.green : Colors.white,
+              borderRadius: BorderRadius.circular(6),
+              border: on ? null : Border.all(color: Tk.grey, width: 1.8),
+            ),
+            child: on
+                ? const SvgIcon('check', size: 14, stroke: 2.4)
+                : null,
+          ),
+        ),
+      ),
+    );
+
+Widget chipW(
+  double x,
+  double y,
+  double w,
+  String label,
+  bool act,
+  VoidCallback onTap,
+) =>
+    Positioned(
+      left: x,
+      top: y,
+      width: w,
+      height: 32,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: act ? Tk.primary : null,
+            color: act ? null : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: act ? null : Border.all(color: const Color(0xFFCBD5E1)),
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontFamily: Tk.font,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: act ? Colors.white : Tk.ink2,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+Widget linkText(double xRight, double y, String s, VoidCallback onTap) =>
+    Positioned(
+      right: 360 - xRight,
+      top: y - 12 * .96875 - 6,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Text(
+            s,
+            style: const TextStyle(
+              fontFamily: Tk.font,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF0F766E),
+              height: 1.2109375,
+            ),
+          ),
+        ),
+      ),
+    );
+
+String fmtMb(double mb) =>
+    mb >= 1000 ? '${(mb / 1024).toStringAsFixed(1)} GB' : '${mb.round()} MB';
