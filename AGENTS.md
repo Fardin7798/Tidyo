@@ -1,7 +1,7 @@
 # AGENTS.md — Operational Guidelines for Tidyo
 
 ## 🎯 Architectural Principles & SSOT
-- **Clean Architecture Standard:** Feature-First Reso Coder & Islamic Legacy standard.
+- **Clean Architecture Standard:** Feature-First Reso Coder standard.
   - `lib/core/`: Cross-cutting concerns (Constants, Error envelopes, Result pattern, Platform & Storage Services).
   - `lib/features/<FeatureName>/domain/`: Pure Dart entities, usecases, and repository contracts (Zero external dependencies).
   - `lib/features/<FeatureName>/data/`: Models, data sources (FileSystem, RulesEngine), and repository implementations.

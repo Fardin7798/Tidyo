@@ -72,7 +72,7 @@ Most mobile cleaner apps on app stores are filled with invasive fullscreen ads, 
 
 ## 🛠️ Architecture
 
-Tidyo is built with strict **Feature-First Clean Architecture** and **Modular Dependency Injection** (matching the Islamic Legacy production standard):
+Tidyo is built with strict **Feature-First Clean Architecture** and **Modular Dependency Injection**:
 
 ```text
 lib/
