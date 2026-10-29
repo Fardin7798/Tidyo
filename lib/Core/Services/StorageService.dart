@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import '../constants/AppConstants.dart';
+import 'package:tidyo/Core/Constants/AppConstants.dart';
 
 class StorageService {
   Future<String> getRootStoragePath() async {

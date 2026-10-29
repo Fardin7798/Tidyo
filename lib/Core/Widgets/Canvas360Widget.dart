@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '../Theme/AppTokens.dart';
-import 'SvgIconWidget.dart';
+import 'package:tidyo/Core/Theme/AppTokens.dart';
+import 'package:tidyo/Core/Widgets/SvgIconWidget.dart';
 
 Widget tx(
   double x,

@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../../../../Core/Models/StorageInfoModel.dart';
-import '../../../../Core/Models/JunkItemModel.dart';
-import '../../../../Core/Services/JunkScannerService.dart';
-import '../../../Dashboard/Presentation/Screens/DashboardScreen.dart';
-import '../../../JunkScanner/Presentation/Screens/ScanningScreen.dart';
-import '../../../JunkScanner/Presentation/Screens/ResultsScreen.dart';
-import '../../../DeepClean/Presentation/Screens/DeepCleanScreen.dart';
-import '../../../StorageAnalyzer/Presentation/Screens/AnalyzerScreen.dart';
+import 'package:tidyo/Core/Models/StorageInfoModel.dart';
+import 'package:tidyo/Core/Models/JunkItemModel.dart';
+import 'package:tidyo/Core/Services/JunkScannerService.dart';
+import 'package:tidyo/Config/Injection/InjectionContainer.dart';
+import 'package:tidyo/Features/Dashboard/Presentation/Screens/DashboardScreen.dart';
+import 'package:tidyo/Features/JunkScanner/Presentation/Screens/ScanningScreen.dart';
+import 'package:tidyo/Features/JunkScanner/Presentation/Screens/ResultsScreen.dart';
+import 'package:tidyo/Features/DeepClean/Presentation/Screens/DeepCleanScreen.dart';
+import 'package:tidyo/Features/StorageAnalyzer/Presentation/Screens/AnalyzerScreen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -21,7 +22,7 @@ class _AppShellState extends State<AppShell> {
   bool _isScanning = false;
   bool _showResults = false;
 
-  final JunkScannerService _scanner = JunkScannerService();
+  final JunkScannerService _scanner = sl<JunkScannerService>();
   List<JunkItemModel> _scannedJunk = [];
 
   // Scanning progress state

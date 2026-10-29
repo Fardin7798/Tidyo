@@ -1,4 +1,4 @@
 import 'package:fpdart/fpdart.dart';
-import '../error/Failures.dart';
+import 'package:tidyo/Core/Error/Failures.dart';
 
 typedef Result<T> = Either<Failure, T>;

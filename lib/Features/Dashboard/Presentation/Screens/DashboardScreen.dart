@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../../../Core/Theme/AppTokens.dart';
-import '../../../../Core/Widgets/Canvas360Widget.dart';
-import '../../../../Core/Widgets/BottomPillNavWidget.dart';
-import '../../../../Core/Models/StorageInfoModel.dart';
-import '../../../AppCache/Presentation/Screens/AppCacheScreen.dart';
-import '../../../ResidualFiles/Presentation/Screens/ResidualFilesScreen.dart';
-import '../../../LogsTemp/Presentation/Screens/LogsTempScreen.dart';
-import '../../../StorageAnalyzer/Presentation/Screens/AnalyzerScreen.dart';
+import 'package:tidyo/Core/Theme/AppTokens.dart';
+import 'package:tidyo/Core/Widgets/Canvas360Widget.dart';
+import 'package:tidyo/Core/Widgets/BottomPillNavWidget.dart';
+import 'package:tidyo/Core/Models/StorageInfoModel.dart';
+import 'package:tidyo/Features/AppCache/Presentation/Screens/AppCacheScreen.dart';
+import 'package:tidyo/Features/ResidualFiles/Presentation/Screens/ResidualFilesScreen.dart';
+import 'package:tidyo/Features/LogsTemp/Presentation/Screens/LogsTempScreen.dart';
+import 'package:tidyo/Features/StorageAnalyzer/Presentation/Screens/AnalyzerScreen.dart';
 
 class DashboardScreen extends StatelessWidget {
   final StorageInfoModel storageInfo;

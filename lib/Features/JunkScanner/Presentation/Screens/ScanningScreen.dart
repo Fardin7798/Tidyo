@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../Core/Theme/AppTokens.dart';
-import '../../../../Core/Widgets/Canvas360Widget.dart';
-import '../../../../Core/Widgets/SvgIconWidget.dart';
+import 'package:tidyo/Core/Theme/AppTokens.dart';
+import 'package:tidyo/Core/Widgets/Canvas360Widget.dart';
+import 'package:tidyo/Core/Widgets/SvgIconWidget.dart';
 
 class ScanningScreen extends StatelessWidget {
   final double progress;

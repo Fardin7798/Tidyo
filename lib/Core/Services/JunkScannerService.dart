@@ -1,5 +1,5 @@
 import 'dart:io';
-import '../Models/JunkItemModel.dart';
+import 'package:tidyo/Core/Models/JunkItemModel.dart';
 
 class BigFileModel {
   final String name;

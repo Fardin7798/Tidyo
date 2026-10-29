@@ -1,20 +1,11 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:tidyo/main.dart';
+import 'package:tidyo/App.dart';
+import 'package:tidyo/Config/Injection/InjectionContainer.dart';
 
 void main() {
   testWidgets('Tidyo smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
-
-    // Verify that our counter starts at 0.
+    await setupServiceLocator();
+    await tester.pumpWidget(const TidyoApp());
     expect(find.text('Hi, Fardin'), findsOneWidget);
   });
 }

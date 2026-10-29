@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../Core/Theme/AppTokens.dart';
-import '../../../../Core/Widgets/Canvas360Widget.dart';
-import '../../../../Core/Widgets/SvgIconWidget.dart';
+import 'package:tidyo/Core/Theme/AppTokens.dart';
+import 'package:tidyo/Core/Widgets/Canvas360Widget.dart';
+import 'package:tidyo/Core/Widgets/SvgIconWidget.dart';
 
 class AppCacheItem {
   final String name, package, letter;

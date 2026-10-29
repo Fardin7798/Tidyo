@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../../../../Core/Theme/AppTokens.dart';
-import '../../../../Core/Widgets/Canvas360Widget.dart';
+import 'package:tidyo/Core/Theme/AppTokens.dart';
+import 'package:tidyo/Core/Widgets/Canvas360Widget.dart';
 
 class LogFile {
   final String name, dir, size, date;
