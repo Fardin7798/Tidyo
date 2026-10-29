@@ -40,7 +40,11 @@
   - Models: `JunkItemModel.dart`, `JunkCategoryModel.dart`, `StorageStatsModel.dart`.
   - Data Sources: `FileSystemDataSource.dart`, `RulesDataSource.dart`.
   - Repository Impl: `JunkCleanerRepositoryImpl.dart`.
-- [x] **Phase 7: Rules Engine - [ ] **Phase 7: Rules Engine Database (`assets/rules/JunkRules.json`)** Feature Detail Screens**
+- [x] **Phase 7: Rules Engine Database & Detail Screens**
+  - assets/rules/JunkRules.json database for safe cleaning signatures.
+  - AppCacheScreen (Screen 6), ResidualFilesScreen (Screen 7), LogsTempScreen (Screen 8).
+  - AnalyzerScreen and DeepClean connected to clean usecases.
+  - Tab 4 SettingsScreen with safe quarantine and whitelist options.
   - AppCacheScreen (Screen 6): Real app info intent launch.
   - ResidualFilesScreen (Screen 7): Orphan tree - [ ] **Phase 7: Rules Engine Database (`assets/rules/JunkRules.json`)** deletion.
   - LogsTempScreen (Screen 8): Log/crash/tmp filtering - [ ] **Phase 7: Rules Engine Database (`assets/rules/JunkRules.json`)** preview.

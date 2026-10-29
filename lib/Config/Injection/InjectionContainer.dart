@@ -8,6 +8,8 @@ import 'package:tidyo/Features/JunkScanner/Domain/Repositories/IJunkScannerRepos
 import 'package:tidyo/Features/JunkScanner/Domain/UseCases/ScanJunkUseCase.dart';
 import 'package:tidyo/Features/JunkScanner/Domain/UseCases/DeleteJunkUseCase.dart';
 import 'package:tidyo/Features/JunkScanner/Presentation/Providers/JunkScannerProvider.dart';
+import 'package:tidyo/Features/StorageAnalyzer/Domain/UseCases/GetBigFilesUseCase.dart';
+import 'package:tidyo/Features/DeepClean/Domain/UseCases/ScanMediaMetricsUseCase.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -49,6 +51,18 @@ Future<void> setupServiceLocator() async {
   if (!sl.isRegistered<DeleteJunkUseCase>()) {
     sl.registerLazySingleton<DeleteJunkUseCase>(
       () => DeleteJunkUseCase(sl<IJunkScannerRepository>()),
+    );
+  }
+
+  if (!sl.isRegistered<GetBigFilesUseCase>()) {
+    sl.registerLazySingleton<GetBigFilesUseCase>(
+      () => GetBigFilesUseCase(sl<JunkScannerService>()),
+    );
+  }
+
+  if (!sl.isRegistered<ScanMediaMetricsUseCase>()) {
+    sl.registerLazySingleton<ScanMediaMetricsUseCase>(
+      () => ScanMediaMetricsUseCase(),
     );
   }
 

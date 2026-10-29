@@ -5,6 +5,8 @@ import 'package:tidyo/Core/Widgets/SvgIconWidget.dart';
 import 'package:tidyo/Core/Widgets/BottomPillNavWidget.dart';
 import 'package:tidyo/Core/Models/StorageInfoModel.dart';
 import 'package:tidyo/Core/Services/JunkScannerService.dart';
+import 'package:tidyo/Config/Injection/InjectionContainer.dart';
+import 'package:tidyo/Features/StorageAnalyzer/Domain/UseCases/GetBigFilesUseCase.dart';
 
 class AnalyzerScreen extends StatefulWidget {
   final StorageInfoModel storageInfo;
@@ -22,7 +24,7 @@ class AnalyzerScreen extends StatefulWidget {
 
 class _AnalyzerScreenState extends State<AnalyzerScreen> {
   int chip = 1;
-  final _scanner = JunkScannerService();
+  final _getBigFilesUseCase = sl<GetBigFilesUseCase>();
   List<BigFileModel> _bigFiles = [];
   bool _isLoading = true;
 
@@ -40,7 +42,8 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
 
   Future<void> _loadFiles() async {
     setState(() => _isLoading = true);
-    final files = await _scanner.findBigFiles(minBytes: _thresholds[chip]);
+    final result = await _getBigFilesUseCase(GetBigFilesParams(minBytes: _thresholds[chip]));
+    final files = result.fold((l) => <BigFileModel>[], (r) => r);
     if (mounted) {
       setState(() {
         _bigFiles = files;

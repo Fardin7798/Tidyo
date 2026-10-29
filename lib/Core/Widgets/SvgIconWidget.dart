@@ -17,6 +17,7 @@ const _ic = <String, String>{
   'play': 'M8 5v14l11-7z',
   'image': 'M3 19l6-7 4 4 3-3 5 6z',
   'spark': 'M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z',
+  'chevron': 'M9 18l6-6-6-6',
 };
 
 final _cache = <String, Path>{};

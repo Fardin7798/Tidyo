@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "name": "Tidyo Safe Cleaning Rules Database",
+  "categories": [
+    {
+      "id": "system_logs",
+      "name": "Logs & Temporary Files",
+      "tier": "safe",
+      "extensions": [".log", ".crashlog", ".tmp", ".trace", ".dump", ".temp"],
+      "patterns": [
+        "**/logs/**",
+        "**/.tmp/**",
+        "**/.temp/**",
+        "**/crash_reports/**"
+      ]
+    },
+    {
+      "id": "thumbnails",
+      "name": "Thumbnail Caches",
+      "tier": "safe",
+      "extensions": [".thumb", ".thumb2"],
+      "patterns": [
+        "**/.thumbnails/**",
+        "**/.thumb/**",
+        "**/DCIM/.thumbnails/**"
+      ]
+    },
+    {
+      "id": "app_cache",
+      "name": "App Cache & Shared Temp",
+      "tier": "safe",
+      "patterns": [
+        "**/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/**",
+        "**/Telegram/Telegram Documents/**/.tmp/**",
+        "**/Download/.tmp/**",
+        "**/Download/temp/**"
+      ]
+    },
+    {
+      "id": "residual_files",
+      "name": "Orphan Residual Data",
+      "tier": "review",
+      "patterns": [
+        "**/Android/data/*/cache/**",
+        "**/Android/obb/*/.tmp/**"
+      ]
+    }
+  ]
+}

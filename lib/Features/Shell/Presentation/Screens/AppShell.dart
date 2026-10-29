@@ -9,6 +9,7 @@ import 'package:tidyo/Features/JunkScanner/Presentation/Screens/ScanningScreen.d
 import 'package:tidyo/Features/JunkScanner/Presentation/Screens/ResultsScreen.dart';
 import 'package:tidyo/Features/DeepClean/Presentation/Screens/DeepCleanScreen.dart';
 import 'package:tidyo/Features/StorageAnalyzer/Presentation/Screens/AnalyzerScreen.dart';
+import 'package:tidyo/Features/Settings/Presentation/Screens/SettingsScreen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -143,6 +144,9 @@ class _AppShellState extends State<AppShell> {
           onNavTap: (tab) => setState(() => _currentTab = tab),
         );
       case 3:
+        return SettingsScreen(
+          onNavTap: (tab) => setState(() => _currentTab = tab),
+        );
       default:
         // Default to Dashboard or settings
         return DashboardScreen(

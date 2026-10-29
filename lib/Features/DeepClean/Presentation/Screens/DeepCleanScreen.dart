@@ -1,9 +1,11 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:tidyo/Core/Theme/AppTokens.dart';
 import 'package:tidyo/Core/Widgets/Canvas360Widget.dart';
 import 'package:tidyo/Core/Widgets/SvgIconWidget.dart';
 import 'package:tidyo/Core/Widgets/BottomPillNavWidget.dart';
+import 'package:tidyo/Config/Injection/InjectionContainer.dart';
+import 'package:tidyo/Core/UseCase/BaseUseCase.dart';
+import 'package:tidyo/Features/DeepClean/Domain/UseCases/ScanMediaMetricsUseCase.dart';
 
 class DeepCleanScreen extends StatefulWidget {
   final ValueChanged<int> onNavTap;
@@ -33,43 +35,19 @@ class _DeepCleanState extends State<DeepCleanScreen> {
   }
 
   Future<void> _loadLiveStats() async {
-    int waBytes = 0;
-    int tgBytes = 0;
-    int brBytes = 0;
-
-    try {
-      final waDir = Directory('/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media');
-      if (await waDir.exists()) {
-        for (final f in waDir.listSync(recursive: true, followLinks: false)) {
-          if (f is File) waBytes += f.lengthSync();
-        }
-      }
-    } catch (_) {}
-
-    try {
-      final tgDir = Directory('/storage/emulated/0/Android/data/org.telegram.messenger/cache');
-      if (await tgDir.exists()) {
-        for (final f in tgDir.listSync(recursive: true, followLinks: false)) {
-          if (f is File) tgBytes += f.lengthSync();
-        }
-      }
-    } catch (_) {}
-
-    try {
-      final brDir = Directory('/storage/emulated/0/Android/data/com.android.chrome');
-      if (await brDir.exists()) {
-        for (final f in brDir.listSync(recursive: true, followLinks: false)) {
-          if (f is File) brBytes += f.lengthSync();
-        }
-      }
-    } catch (_) {}
-
+    final useCase = sl<ScanMediaMetricsUseCase>();
+    final result = await useCase(const NoParams());
     if (mounted) {
-      setState(() {
-        waSize = _format(waBytes == 0 ? 1200000000 : waBytes);
-        tgSize = _format(tgBytes == 0 ? 53000000 : tgBytes);
-        brSize = _format(brBytes == 0 ? 420000000 : brBytes);
-      });
+      result.fold(
+        (failure) {},
+        (metrics) {
+          setState(() {
+            waSize = _format(metrics.whatsappBytes);
+            tgSize = _format(metrics.telegramBytes);
+            brSize = _format(metrics.browserBytes);
+          });
+        },
+      );
     }
   }
 

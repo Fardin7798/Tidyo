@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tidyo/Core/Theme/AppTokens.dart';
+import 'package:tidyo/Core/Widgets/ErrorBoundary.dart';
 import 'package:tidyo/Features/Shell/Presentation/Screens/AppShell.dart';
 
 class TidyoApp extends StatelessWidget {
@@ -20,6 +21,7 @@ class TidyoApp extends StatelessWidget {
           secondary: Tk.teal,
         ),
       ),
+      builder: (context, child) => ErrorBoundary(child: child!),
       home: const AppShell(),
     );
   }
