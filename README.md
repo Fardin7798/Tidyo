@@ -23,50 +23,94 @@ Most mobile cleaner apps on app stores are filled with invasive fullscreen ads, 
 - **Cross-Platform Vision:** Engineered in Flutter for seamless execution across Android and iOS devices.
 
 ---
+## 📸 Visual Showcase
+
+| Storage Dashboard | App Cache Cleaner | Residual Files Hunter | Logs & Temp Explorer | Storage Analyzer |
+| :---: | :---: | :---: | :---: | :---: |
+| <img src="docs/screenshots/dashboard.png" width="160" /> | <img src="docs/screenshots/app_cache.png" width="160" /> | <img src="docs/screenshots/residual_files.png" width="160" /> | <img src="docs/screenshots/logs_temp.png" width="160" /> | <img src="docs/screenshots/analyzer.png" width="160" /> |
+
 
 ## 📱 Core Features
 
-### 1. Real-Time Storage Dashboard
-- Live storage progress ring tracking device partition metrics (`Used`, `Free`, `Total`).
+### 1. Real-Time Storage Partition Telemetry
+- Live storage progress ring tracking device partition metrics (`Used`, `Free`, `Total`) directly via `StatFs` and directory telemetry.
 - Instant health evaluation and one-tap safe junk scanning.
 
-### 2. Intelligent Junk Scanner
-- Live recursive directory scanner with real-time file counters and path breadcrumbs.
+### 2. Intelligent Junk Scanner & 3-Tier Safe Quarantine
+- Live recursive directory scanner with real-time file counters, progress percentage, and path breadcrumbs.
 - Detects app cache, orphan `.tmp` files, obsolete logs, and stale APK installers.
-
-### 3. Safe 3-Tier Results Quarantine
 - **100% Safe:** Empty folders, app logs, temporary cache, old APK installers (auto-checked).
-- **Review Required:** WhatsApp stickers, voice notes, screenshots (requires explicit user confirmation).
-- **Protected:** Camera photos, downloads, system documents (permanently locked).
+- **Review Required:** Messaging stickers, voice notes, screenshots (explicit user confirmation).
+- **Protected:** Camera photos, downloads, system documents (permanently locked from accidental deletion).
 
-### 4. Deep Clean (Messaging & Social Cache)
-- Dedicated WhatsApp cleaner for sent media, status cache, voice notes, and stickers.
-- Telegram and web browser cache managers.
+### 3. App Cache Manager
+- Instant inspection of heavy application caches (YouTube, Instagram, Chrome, Spotify, Google Maps).
+- One-tap direct system intent launch to native Android App-Info screen for instantaneous cache clearing without permission risk.
 
-### 5. Storage Analyzer & Big Files Hunter
-- Storage composition breakdown (Photos, Videos, Apps, Junk).
+### 4. Residual Files Hunter
+- Scans `/Android/data`, `/Android/media`, and `/Android/obb` for leftover orphan folders of uninstalled applications.
+- Visual breakdown of subdirectories (`cache`, `files`, `obb`) with one-tap safe purge.
+
+### 5. Logs & Temporary Files Explorer
+- Deep-dives into `.log`, `.tmp`, and crashdumps (`tombstones`, `anr`).
+- In-app text preview of log files with real timestamps and memory size breakdown before deletion.
+
+### 6. Deep Clean (Messaging & Social Media Cache)
+- Dedicated WhatsApp media cleaner for sent videos, status cache, voice notes, and stickers.
+- Telegram cache and web browser cache managers.
+
+### 7. Storage Analyzer & Big Files Hunter
+- Storage composition breakdown across categories.
 - Big Files Hunter with custom threshold filters (`25 MB+`, `50 MB+`, `100 MB+`).
-- SHA-256 Duplicate Finder pipeline.
+- Duplicate file review and space diagnostics.
+
+### 8. Preferences & Safe Quarantine Settings
+- Tab 4 customization for Safe 3-Tier Quarantine, auto-scan on low storage, and notification alerts.
+- Open-source repository information and privacy whitelist options.
 
 ---
 
 ## 🛠️ Architecture
 
-Tidyo follows **Feature-First Clean Architecture**:
+Tidyo is built with strict **Feature-First Clean Architecture** and **Modular Dependency Injection** (matching the Islamic Legacy production standard):
 
-```
+```text
 lib/
+├── App.dart                                      # Root MultiProvider & Global ErrorBoundary
+├── Main.dart
+├── Config/
+│   └── Injection/
+│       ├── InjectionContainer.dart               # Service locator orchestrator (GetIt)
+│       └── Modules/                              # Modular feature injection files
+│           ├── CoreInjection.dart
+│           ├── DashboardInjection.dart
+│           ├── JunkScannerInjection.dart
+│           ├── StorageAnalyzerInjection.dart
+│           ├── DeepCleanInjection.dart
+│           ├── AppCacheInjection.dart
+│           ├── ResidualFilesInjection.dart
+│           ├── LogsTempInjection.dart
+│           └── SettingsInjection.dart
 ├── Core/
-│   ├── Models/         # Storage and junk data representations
-│   ├── Services/       # Filesystem scanner & storage partition APIs
-│   ├── Theme/          # FigCraft design tokens (Tk)
-│   └── Widgets/        # Custom SVG path painters & 360 canvas
+│   ├── Constants/                                # App colors, metrics, and thresholds
+│   ├── Error/                                    # Domain Failure envelopes & AppExceptions
+│   ├── Models/                                   # Core storage and junk models
+│   ├── Result/                                   # Functional Result pattern (fpdart Either)
+│   ├── Services/                                 # PermissionService, StorageService, ScannerService
+│   ├── Theme/                                    # AppTokens (Tk) design tokens
+│   ├── UseCase/                                  # BaseUseCase contract
+│   ├── Utils/                                    # AppLogger (Gated production logging)
+│   └── Widgets/                                  # Canvas360, ErrorBoundary, BottomPillNav, SvgIcon
 └── Features/
-    ├── Dashboard/      # Main storage telemetry screen
-    ├── JunkScanner/    # Scanning & results presentation
-    ├── DeepClean/      # WhatsApp, Telegram, Browser cleanup
-    ├── StorageAnalyzer/# Big files hunter & space diagnostics
-    └── Shell/          # Main bottom navigation & app state coordinator
+    ├── Dashboard/                                # Domain, Data, Presentation (DashboardScreen)
+    ├── JunkScanner/                              # Domain, Data, Presentation (ScanningScreen, ResultsScreen)
+    ├── StorageAnalyzer/                          # Domain, Data, Presentation (AnalyzerScreen)
+    ├── DeepClean/                                # Domain, Data, Presentation (DeepCleanScreen)
+    ├── AppCache/                                 # Domain, Data, Presentation (AppCacheScreen)
+    ├── ResidualFiles/                            # Domain, Data, Presentation (ResidualFilesScreen)
+    ├── LogsTemp/                                 # Domain, Data, Presentation (LogsTempScreen)
+    ├── Settings/                                 # Domain, Data, Presentation (SettingsScreen)
+    └── Shell/                                    # AppShell (Bottom navigation coordinator)
 ```
 
 ---
