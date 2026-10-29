@@ -1,6 +1,7 @@
 # CONTEXT.md — Project State & Architecture Execution (SSOT)
 
 ## Project Identity
+- **Repository:** https://github.com/Fardin7798/Tidyo
 - **Project Name:** Tidyo
 - **Package ID:** `com.tidyo`
 - **Platform:** Android (API 26 to 34+) via Flutter 3.47+ (Dart 3.13+)
