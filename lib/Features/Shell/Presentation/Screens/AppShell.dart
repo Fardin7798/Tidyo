@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:tidyo/Core/Models/StorageInfoModel.dart';
 import 'package:tidyo/Core/Models/JunkItemModel.dart';
-import 'package:tidyo/Core/Services/JunkScannerService.dart';
+import 'package:tidyo/Features/JunkScanner/Presentation/Providers/JunkScannerProvider.dart';
 import 'package:tidyo/Config/Injection/InjectionContainer.dart';
 import 'package:tidyo/Features/Dashboard/Presentation/Screens/DashboardScreen.dart';
 import 'package:tidyo/Features/JunkScanner/Presentation/Screens/ScanningScreen.dart';
@@ -19,17 +19,7 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int _currentTab = 0;
-  bool _isScanning = false;
-  bool _showResults = false;
-
-  final JunkScannerService _scanner = sl<JunkScannerService>();
-  List<JunkItemModel> _scannedJunk = [];
-
-  // Scanning progress state
-  double _scanProgress = 0.0;
-  int _scannedFiles = 0;
-  String _currentPath = '/storage/emulated/0/...';
-  int _foundBytes = 0;
+  late final JunkScannerProvider _junkProvider = sl<JunkScannerProvider>();
 
   // Live storage info
   StorageInfoModel _storageInfo = StorageInfoModel(
@@ -41,7 +31,18 @@ class _AppShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
+    _junkProvider.addListener(_onProviderUpdate);
     _refreshStorage();
+  }
+
+  @override
+  void dispose() {
+    _junkProvider.removeListener(_onProviderUpdate);
+    super.dispose();
+  }
+
+  void _onProviderUpdate() {
+    if (mounted) setState(() {});
   }
 
   Future<void> _refreshStorage() async {
@@ -70,46 +71,19 @@ class _AppShellState extends State<AppShell> {
     return null;
   }
 
-  void _startScan() async {
-    setState(() {
-      _isScanning = true;
-      _showResults = false;
-      _scanProgress = 0.05;
-      _scannedFiles = 0;
-      _foundBytes = 0;
-      _currentPath = '/storage/emulated/0';
-    });
-
-    final items = await _scanner.scanAll(
-      onProgress: (path, count, bytes) {
-        if (!mounted) return;
-        setState(() {
-          _currentPath = path;
-          _scannedFiles = count;
-          _foundBytes = bytes;
-          _scanProgress = (_scannedFiles / 3000.0).clamp(0.05, 0.95);
-        });
-      },
-    );
-
-    if (!mounted) return;
-    setState(() {
-      _isScanning = false;
-      _scanProgress = 1.0;
-      _scannedJunk = items;
-      _showResults = true;
-    });
+  void _startScan() {
+    _junkProvider.startScan();
   }
 
   void _stopScan() {
-    _scanner.stopScan();
-    setState(() {
-      _isScanning = false;
-    });
+    _junkProvider.stopScan();
   }
 
   Future<void> _cleanSelected(List<JunkItemModel> selectedItems) async {
-    final deletedBytes = await _scanner.deleteItems(selectedItems);
+    final entities = _junkProvider.scannedJunk
+        .where((e) => selectedItems.any((s) => s.path == e.path))
+        .toList();
+    final deletedBytes = await _junkProvider.deleteSelected(entities);
     await _refreshStorage();
     if (mounted) {
       final mbFreed = (deletedBytes / (1024 * 1024)).toStringAsFixed(1);
@@ -124,21 +98,30 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isScanning) {
+    if (_junkProvider.isScanning) {
       return ScanningScreen(
-        progress: _scanProgress,
-        files: _scannedFiles,
-        path: _currentPath,
-        junkBytes: _foundBytes,
+        progress: _junkProvider.scanProgress,
+        files: _junkProvider.scannedFiles,
+        path: _junkProvider.currentPath,
+        junkBytes: _junkProvider.foundBytes,
         onStop: _stopScan,
-        onBack: () => setState(() => _isScanning = false),
+        onBack: _stopScan,
       );
     }
 
-    if (_showResults) {
+    if (_junkProvider.showResults) {
       return ResultsScreen(
-        items: _scannedJunk,
-        onBack: () => setState(() => _showResults = false),
+        items: _junkProvider.scannedJunk
+            .map((e) => JunkItemModel(
+                  path: e.path,
+                  name: e.name,
+                  sizeBytes: e.sizeBytes,
+                  tier: e.tier,
+                  categoryName: e.categoryName,
+                  isSelected: e.isSelected,
+                ))
+            .toList(),
+        onBack: _junkProvider.dismissResults,
         onCleanPressed: _cleanSelected,
       );
     }
