@@ -7,7 +7,7 @@ abstract class IAppCacheDataSource {
 }
 
 class AppCacheDataSource implements IAppCacheDataSource {
-  static const MethodChannel _channel = MethodChannel('com.tidyo/native');
+  static const MethodChannel _channel = MethodChannel('com.tidyo.tidyo/app_settings');
 
   @override
   Future<List<AppCacheEntity>> getAppCacheList() async {
